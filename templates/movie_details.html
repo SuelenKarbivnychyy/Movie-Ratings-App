@@ -10,4 +10,22 @@
 </p>
 
 <img src="{{ movie.poster_path }}">
+
+<form action="/movie/{{ movie.movie_id }}/ratings" method="POST">
+
+  <label for="rating">Please rate this movie:</label> 
+
+  <select name="rating" id="rating">
+    <option value=5>5</option>
+    <option value=4>4</option>
+    <option value=3>3</option>
+    <option value=2>2</option>
+    <option value=1>1</option>
+    <option value=0>0</option>
+  </select>
+
+  <input type="submit">
+
+</form>
+
 {% endblock %}
