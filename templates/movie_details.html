@@ -28,4 +28,21 @@
 
 </form>
 
+<form action="/movie/{{ movie.movie_id }}/update_rating" method="POST">
+
+  <label for="update_rating">Update Your Rating:</label> 
+
+  <select name="update_rating" id="update_rating">
+    <option value=5>5</option>
+    <option value=4>4</option>
+    <option value=3>3</option>
+    <option value=2>2</option>
+    <option value=1>1</option>
+    <option value=0>0</option>
+  </select>
+
+  <input type="submit">
+
+</form>
+
 {% endblock %}

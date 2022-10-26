@@ -3,7 +3,7 @@
 from flask import Flask
 from flask import (Flask, render_template, request, flash, session,
                    redirect)
-from model import connect_to_db, db
+from model import connect_to_db, db, User, Rating, Movie
 import crud
 
 from jinja2 import StrictUndefined
@@ -51,7 +51,7 @@ def register_user():
     password = request.form["password"]
 
     if crud.get_user_by_email(email) == None:
-        new_user = crud.create_user(email, password)
+        new_user = User.create(email, password)
         db.session.add(new_user)
         db.session.commit()
         flash("Success! You can now log in!")
@@ -92,7 +92,23 @@ def create_rating(movie_id):
     movie = crud.get_movie_by_id(movie_id)
     rating = int(request.form["rating"])
 
-    new_rating = crud.create_rating(user, movie , rating)
+    new_rating = Rating.create(rating, user, movie)
+    db.session.add(new_rating)
+    db.session.commit()
+
+    return redirect("/movies")
+
+@app.route("/movie/<movie_id>/update_rating", methods=["POST"])
+def update_rating(movie_id):
+    """Update rating for a movie."""
+
+    user = crud.get_user_by_id(session["user"])
+    movie = crud.get_movie_by_id(movie_id)
+    rating = int(request.form["update_rating"])
+
+    db.session.delete(crud.get_rating_by_user(session["user"], movie_id))
+
+    new_rating = Rating.create(rating, user, movie)
     db.session.add(new_rating)
     db.session.commit()
 

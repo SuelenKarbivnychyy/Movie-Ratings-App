@@ -2,6 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask import Flask, request, render_template, jsonify
 
 db = SQLAlchemy()
 
@@ -35,6 +36,12 @@ class User(db.Model):
     def __repr__(self):
         return f'<User user_id={self.user_id} email = {self.email}>'
 
+    @classmethod
+    def create(cls, email, password):
+        """Create and return a new user."""
+
+        return cls(email=email, password=password)
+
 
 class Movie(db.Model):
 
@@ -52,6 +59,13 @@ class Movie(db.Model):
 
     def __repr__(self):
         return f'<Movie movie_id={self.movie_id} title = {self.title}>'
+
+    @classmethod
+    def create(cls, title, overview, release_date, poster_path):
+        """Create and return a new movie."""
+
+        return cls(title = title, overview = overview, release_date = release_date, poster_path = poster_path)
+
 
 
 class Rating(db.Model):
@@ -71,6 +85,14 @@ class Rating(db.Model):
 
     def __repr__(self):
         return f'<Rating rating_id={self.rating_id} score = {self.score}>'
+
+    @classmethod
+    def create(cls, score, user, movie):
+        """Create and return a new rating."""
+
+        return cls(score = score, user = user, movie = movie)
+
+   
     
 
 
